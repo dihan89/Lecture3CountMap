@@ -18,22 +18,22 @@ class CountMapMy<T>  implements CountMap<T>  {
         Integer nEntries = elemsToCountsEntries.get(elem);
         Integer nEntriesNew = (nEntries == null) ? 1 : nEntries + 1;
         elemsToCountsEntries.put(elem, nEntriesNew);
-    };
+    }
 
    public int getCount(T elem){
         Integer nEntries = elemsToCountsEntries.get(elem);
         return (nEntries == null) ? 0 : nEntries;
-    };
+    }
 
     //current count
     public int remove(T elem){ 
         Integer result = elemsToCountsEntries.remove(elem);     
         return (result == null) ? 0 : result;
-    };
+    }
 
     public int size(){
         return elemsToCountsEntries.size();
-    };
+    }
 
     public void addAll(CountMap<T> source){
         for(Map.Entry<T, Integer> pair : source.toMap().entrySet()){
@@ -41,15 +41,18 @@ class CountMapMy<T>  implements CountMap<T>  {
             Integer nEntriesNew = (nEntries == null) ? pair.getValue() : pair.getValue() + nEntries;
             elemsToCountsEntries.put(pair.getKey(), nEntriesNew);
         }
-    };
+    }
 
     public Map<T, Integer> toMap(){
-        return elemsToCountsEntries;
-    };
+        return new HashMap<>(elemsToCountsEntries);
+    }
 
     public void toMap(Map<T, Integer> destination){
-        destination.putAll(elemsToCountsEntries);
-    };
+        for (Map.Entry<T, Integer> pair : elemsToCountsEntries.entrySet())
+         if (destination.containsKey(pair.getKey())){
+             destination.put(pair.getKey(), destination.get(pair.getKey()) + pair.getValue());
+        } else  destination.put(pair.getKey(), pair.getValue());
+     }
     CountMapMy(){
         elemsToCountsEntries = new HashMap<>();
     }
